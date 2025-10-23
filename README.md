@@ -25,7 +25,7 @@ This project showcases a fully responsive design with organized folder structure
 ## Live Demo
 
 View the live website here:  
-[https://yourusername.github.io/barbeiro-website/](https://yourusername.github.io/barbeiro-website/)
+[[https://yourusername.github.io/barbeiro-website/](https://yourusername.github.io/barbeiro-website/)](https://rachit-parsana.github.io/Barbeiro/)
 
 ## Project Structure
 
