@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barbeiro Admin | Login</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Fullscreen Loader with white background */
+        #loaderOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 3D Cube Spinner */
+        .spinner {
+            width: 120px;
+            height: 120px;
+            animation: spinner-y0fdc1 2s infinite ease;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .spinner>div {
+            background-color: rgba(0, 77, 255, 0.2);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border: 2px solid #004dff;
+        }
+
+        .spinner div:nth-of-type(1) {
+            transform: translateZ(-60px) rotateY(180deg);
+        }
+
+        .spinner div:nth-of-type(2) {
+            transform: rotateY(-270deg) translateX(50%);
+            transform-origin: top right;
+        }
+
+        .spinner div:nth-of-type(3) {
+            transform: rotateY(270deg) translateX(-50%);
+            transform-origin: center left;
+        }
+
+        .spinner div:nth-of-type(4) {
+            transform: rotateX(90deg) translateY(-50%);
+            transform-origin: top center;
+        }
+
+        .spinner div:nth-of-type(5) {
+            transform: rotateX(-90deg) translateY(50%);
+            transform-origin: bottom center;
+        }
+
+        .spinner div:nth-of-type(6) {
+            transform: translateZ(60px);
+        }
+
+        @keyframes spinner-y0fdc1 {
+            0% {
+                transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+            }
+
+            50% {
+                transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+            }
+
+            100% {
+                transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+            }
+        }
+
+        /* Hide page content until loader finishes */
+        body.loading>*:not(#loaderOverlay) {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="loading bg-blue-50">
+    <!-- Fullscreen Loader -->
+    <div id="loaderOverlay">
+        <div class="spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Login Section -->
+    <section class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="bg-white p-5 rounded shadow-lg w-100" style="max-width: 400px;">
+            <h2 class="text-center text-2xl font-bold mb-4 text-blue-600">Admin Login</h2>
+            <form id="adminLoginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+                <div class="text-end mt-2">
+                    <a href="forgot-password.html" class="text-sm text-blue-600">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <div class="text-center mt-4">
+        <a href="../client/index.html" class="text-blue-500 text-sm">
+            ← Back to Client Site
+        </a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Loader shows for 2s before page becomes visible
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loaderOverlay').style.display = 'none';
+                document.body.classList.remove('loading');
+            }, 2000);
+        });
+
+        // Redirect to dashboard after login
+        const loginForm = document.getElementById('adminLoginForm');
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Optional validation (username/password non-empty)
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (username === "" || password === "") {
+                alert("Please enter both username and password!");
+                return;
+            }
+
+            // Simulate processing delay
+            setTimeout(() => {
+                window.location.href = "dashboard.html"; // Redirect to dashboard
+            }, 1000); // 1 second small wait before redirect
+        });
+    </script>
+</body>
+
+</html>
