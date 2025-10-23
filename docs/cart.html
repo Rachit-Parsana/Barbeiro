@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barbeiro | Cart & Order</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* Loader */
+        #pageLoader {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            z-index: 9999;
+        }
+
+        .loader-section {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .bowl {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            border: 4px solid transparent;
+            transform-origin: bottom center;
+            animation: animate 5s linear infinite;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(22deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(-22deg);
+            }
+
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .bowl::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 15px;
+            border: 7px solid #444;
+            border-radius: 50%;
+            box-shadow: 0 5px #222;
+        }
+
+        .bowl::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 75px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50%;
+            transform-origin: center;
+            animation: animatebowlshadow 5s linear infinite;
+        }
+
+        @keyframes animatebowlshadow {
+
+            0%,
+            50%,
+            100% {
+                left: 50%;
+                width: 75px;
+                height: 30px;
+            }
+
+            25% {
+                left: 55%;
+                width: 70px;
+                height: 32px;
+            }
+
+            75% {
+                left: 45%;
+                width: 70px;
+                height: 32px;
+            }
+        }
+
+        .liquid {
+            position: absolute;
+            top: 50%;
+            left: 2.5px;
+            right: 2.5px;
+            bottom: 2.5px;
+            background: #1ae907;
+            border-bottom-left-radius: 75px;
+            border-bottom-right-radius: 75px;
+            filter: drop-shadow(0 0 40px #1ae907);
+            transform-origin: top center;
+            animation: animateliquid 5s linear infinite;
+        }
+
+        @keyframes animateliquid {
+
+            0%,
+            50%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(-22deg);
+            }
+
+            30% {
+                transform: rotate(-23deg);
+            }
+
+            75% {
+                transform: rotate(22deg);
+            }
+        }
+
+        .liquid::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            width: 100%;
+            height: 10px;
+            background: #15be05;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 40px #15be05);
+        }
+
+        .shadow {
+            position: absolute;
+            top: calc(50% + 75px);
+            width: 125px;
+            height: 20px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            animation: animateshadow 5s linear infinite;
+        }
+
+        @keyframes animateshadow {
+
+            0%,
+            50%,
+            100% {
+                left: 50%;
+                width: 130px;
+                height: 20px;
+                top: calc(50%+75px);
+            }
+
+            25% {
+                left: 55%;
+                width: 132px;
+                height: 15px;
+                top: calc(50%+65px);
+            }
+
+            75% {
+                left: 45%;
+                width: 132px;
+                height: 15px;
+                top: calc(50%+65px);
+            }
+        }
+
+        footer i {
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        footer i:hover {
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Loader -->
+    <div id="pageLoader">
+        <section class="loader-section">
+            <div class="shadow"></div>
+            <div class="bowl">
+                <div class="liquid"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-danger" href="index.html">Barbeiro</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto fw-semibold">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tips.html">Grooming Tips</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="cart.html">Cart/Order</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../admin/login.html">Admin Panel</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Section -->
+    <section class="container py-5">
+        <h2 class="text-center fw-bold mb-4">Your Cart</h2>
+        <div class="row">
+            <!-- Products List -->
+            <div class="col-md-6">
+                <h4 class="mb-3">Products</h4>
+                <div class="row g-3" id="productList">
+                    <!-- Each product -->
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Classic Beard Oil</h6>
+                                <p class="mb-3">₹499</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Classic Beard Oil',499)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Matte Hair Wax</h6>
+                                <p class="mb-3">₹349</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Matte Hair Wax',349)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Luxury Shaving Cream</h6>
+                                <p class="mb-3">₹599</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Luxury Shaving Cream',599)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Beard Comb</h6>
+                                <p class="mb-3">₹199</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Beard Comb',199)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <!-- Second row -->
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Hair Serum</h6>
+                                <p class="mb-3">₹399</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Hair Serum',399)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Shaving Brush</h6>
+                                <p class="mb-3">₹249</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Shaving Brush',249)">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Hair Clay</h6>
+                                <p class="mb-3">₹349</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto" onclick="addToCart('Hair Clay',349)">Add
+                                to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                        <div class="card p-2 shadow-sm text-center h-100 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="mb-2">Beard Balm</h6>
+                                <p class="mb-3">₹499</p>
+                            </div>
+                            <button class="btn btn-danger btn-sm w-100 mt-auto"
+                                onclick="addToCart('Beard Balm',499)">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Cart & Checkout -->
+            <div class="col-md-6">
+                <h4 class="mb-3">Cart</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered bg-white" id="cartTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Product</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="text-end mb-4">
+                    <h5 class="fw-bold">Grand Total: ₹<span id="grandTotal">0</span></h5>
+                </div>
+
+                <!-- Checkout Form -->
+                <form id="checkoutForm" class="bg-white p-4 shadow-sm rounded">
+                    <h5 class="mb-3">Checkout Details</h5>
+                    <div class="mb-2"><label for="name" class="form-label">Full Name</label><input type="text" id="name"
+                            class="form-control" required></div>
+                    <div class="mb-2"><label for="email" class="form-label">Email</label><input type="email" id="email"
+                            class="form-control" required></div>
+                    <div class="mb-2"><label for="address" class="form-label">Shipping Address</label><textarea
+                            id="address" class="form-control" rows="2" required></textarea></div>
+                    <div class="mb-3"><label for="payment" class="form-label">Payment Method</label>
+                        <select id="payment" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="gpay">Google Pay</option>
+                            <option value="card">Credit/Debit Card</option>
+                            <option value="cod">Cash on Delivery</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <p class="mb-2">&copy; 2025 Barbeiro. All rights reserved.</p>
+        <div>
+            <i class="bi bi-facebook"></i>
+            <i class="bi bi-instagram"></i>
+            <i class="bi bi-twitter"></i>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JS Logic -->
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => { document.getElementById('pageLoader').style.display = 'none'; }, 1500);
+        });
+
+        let cart = [];
+
+        function addToCart(name, price) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index >= 0) { cart[index].qty += 1; }
+            else { cart.push({ name, price, qty: 1 }); }
+            updateCart();
+            alert(`${name} added to cart!`);
+        }
+
+        function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
+
+        function updateCart() {
+            const tbody = document.querySelector('#cartTable tbody');
+            tbody.innerHTML = '';
+            let grandTotal = 0;
+            cart.forEach((item, i) => {
+                const total = item.price * item.qty;
+                grandTotal += total;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+          <td>${item.name}</td>
+          <td><input type="number" min="1" value="${item.qty}" class="form-control form-control-sm" onchange="changeQty(${i},this.value)"></td>
+          <td>₹${item.price}</td>
+          <td>₹${total}</td>
+          <td><button class="btn btn-sm btn-danger" onclick="removeFromCart(${i})">Remove</button></td>
+        `;
+                tbody.appendChild(row);
+            });
+            document.getElementById('grandTotal').innerText = grandTotal;
+        }
+
+        function changeQty(index, qty) { if (qty < 1) qty = 1; cart[index].qty = parseInt(qty); updateCart(); }
+
+        document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (cart.length === 0) { alert('Your cart is empty!'); return; }
+            alert('Order placed successfully! Thank you for shopping with Barbeiro.');
+            cart = []; updateCart(); this.reset();
+        });
+    </script>
+</body>
+
+</html>
